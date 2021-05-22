@@ -1,7 +1,7 @@
 const { app, BrowserWindow, ipcMain } = require('electron');
 const { Sequelize } = require('sequelize');
 
-const { databaseConnection } = require('./database');
+const { databaseConnection, addTodoItem } = require('./database');
 
 let seq = undefined;
 
@@ -9,7 +9,7 @@ let seq = undefined;
 function createWindow() {
   const win = new BrowserWindow({
     width: 800,
-    height: 600,
+    height: 400,
     webPreferences: {
       nodeIntegration: true,
       enableRemoteModule: true,
@@ -20,7 +20,7 @@ function createWindow() {
 
   win.loadURL('http://localhost:3000');
 
-  //win.webContents.openDevTools();
+  win.webContents.openDevTools();
 }
 
 // Connect to the database
@@ -77,4 +77,8 @@ ipcMain.handle('async-ping-2', (event, ...args) => {
 
   // Send response
   return 'ASYNC PONG 2';
+});
+
+ipcMain.handle('addTodoItem', (event, args) => {
+  addTodoItem(args);
 });

@@ -7,16 +7,39 @@ let seq = new Sequelize({
 });
 console.log('[Database] Created database instance');
 
-const Todo = seq.define('Todo', {
-  name: {
-    type: DataTypes.STRING,
-    allowNull: false,
+const Todo = seq.define(
+  'Todo',
+  {
+    // model attributes
+    name: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    description: {
+      type: DataTypes.STRING,
+      allowNull: true, //default
+    },
   },
-  description: {
-    type: DataTypes.STRING,
-    allowNull: true,
-  },
-});
+  {
+    // other model options
+    seq,
+  }
+);
 console.log('[Database] Defined user model:', Todo === seq.models.Todo);
 
+// With alter:true, the table in the DB
+// is changed to match the model if necessary
+Todo.sync({ alter: true })
+  .then(() => console.log('[Database] Todo model sync complete'))
+  .catch((e) => console.log('[Database] Todo model sync failed', e));
+
+const addTodoItem = async (todoItem) => {
+  const todo = await Todo.create({
+    name: todoItem.todoName,
+    description: todoItem.todoDescription,
+  });
+  console.log('[Database] (TODO) ADD:', todo.toJSON());
+};
+
 module.exports.databaseConnection = seq;
+module.exports.addTodoItem = addTodoItem;
