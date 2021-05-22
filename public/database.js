@@ -49,7 +49,7 @@ const fetchTodoItems = async () => {
   return items;
 };
 
-const deleteTodoItems = (id) => {
+const deleteTodoItem = (id) => {
   Todo.destroy({
     where: {
       id: id,
@@ -59,7 +59,24 @@ const deleteTodoItems = (id) => {
     .catch(() => console.log('[Database] (TODO) DELETE failed', id));
 };
 
+const updateTodoItem = (todoItem) => {
+  Todo.update(
+    {
+      name: todoItem.todoName,
+      description: todoItem.todoDescription,
+    },
+    {
+      where: {
+        id: todoItem.todoId,
+      },
+    }
+  )
+    .then(() => console.log('[Database] (TODO) UPDATE succesfull', todoItem))
+    .catch(() => console.log('[Database] (TODO) UPDATE failed', todoItem));
+};
+
 module.exports.databaseConnection = seq;
 module.exports.addTodoItem = addTodoItem;
 module.exports.fetchTodoItems = fetchTodoItems;
-module.exports.deleteTodoItem = deleteTodoItems;
+module.exports.deleteTodoItem = deleteTodoItem;
+module.exports.updateTodoItem = updateTodoItem;

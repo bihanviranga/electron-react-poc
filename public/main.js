@@ -5,6 +5,7 @@ const {
   addTodoItem,
   fetchTodoItems,
   deleteTodoItem,
+  updateTodoItem,
 } = require('./database');
 
 let seq = undefined;
@@ -97,4 +98,8 @@ ipcMain.handle('fetchTodoItems', (event, args) => {
 // Delete
 ipcMain.handle('deleteTodoItem', (event, args) => {
   return deleteTodoItem(args);
+});
+
+ipcMain.handle('editTodoItem', (event, args) => {
+  return updateTodoItem(args);
 });
