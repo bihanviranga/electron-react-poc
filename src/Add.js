@@ -53,6 +53,17 @@ const Add = () => {
       </div>
 
       <button onClick={createTodoItem}>Add</button>
+
+      <hr />
+      <ul>
+        {allItems.map((item) => {
+          return (
+            <li>
+              {item.name} - <code>{item.description}</code>
+            </li>
+          );
+        })}
+      </ul>
     </div>
   );
 };
