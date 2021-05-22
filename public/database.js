@@ -41,5 +41,14 @@ const addTodoItem = async (todoItem) => {
   console.log('[Database] (TODO) ADD:', todo.toJSON());
 };
 
+const fetchTodoItems = async () => {
+  const items = Todo.findAll({
+    attributes: ['id', 'name', 'description'],
+  });
+  console.log('[Database] (TODO) FETCH called');
+  return items;
+};
+
 module.exports.databaseConnection = seq;
 module.exports.addTodoItem = addTodoItem;
+module.exports.fetchTodoItems = fetchTodoItems;

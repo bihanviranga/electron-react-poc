@@ -1,6 +1,7 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 const Add = () => {
+  const [allItems, setAllItems] = useState([]);
   const [todoItem, setTodoItem] = useState({
     todoName: undefined,
     todoDescription: undefined,
@@ -9,6 +10,22 @@ const Add = () => {
   const createTodoItem = () => {
     window.ipcRenderer.invoke('addTodoItem', todoItem);
   };
+
+  const fetchTodoItems = async () => {
+    window.ipcRenderer.invoke('fetchTodoItems').then((res) => {
+      console.log(res);
+      const fetchedItems = res.map((item) => item.dataValues);
+      setAllItems(fetchedItems);
+    });
+  };
+
+  useEffect(() => {
+    fetchTodoItems();
+  }, []);
+
+  useEffect(() => {
+    console.log('All items', allItems);
+  }, [allItems]);
 
   return (
     <div>

@@ -1,7 +1,11 @@
 const { app, BrowserWindow, ipcMain } = require('electron');
 const { Sequelize } = require('sequelize');
 
-const { databaseConnection, addTodoItem } = require('./database');
+const {
+  databaseConnection,
+  addTodoItem,
+  fetchTodoItems,
+} = require('./database');
 
 let seq = undefined;
 
@@ -72,6 +76,7 @@ ipcMain.on('sync-ping-1', (event, arg) => {
   event.returnValue = 'SYNC PONG 1';
 });
 
+// Event handler for `invoke` calls
 ipcMain.handle('async-ping-2', (event, ...args) => {
   console.log('[IPC_Main] (SYNC) Recieved', args);
 
@@ -79,6 +84,12 @@ ipcMain.handle('async-ping-2', (event, ...args) => {
   return 'ASYNC PONG 2';
 });
 
+// Add
 ipcMain.handle('addTodoItem', (event, args) => {
   addTodoItem(args);
+});
+
+// Fetch
+ipcMain.handle('fetchTodoItems', (event, args) => {
+  return fetchTodoItems();
 });
