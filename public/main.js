@@ -16,7 +16,6 @@ function createWindow() {
     },
   });
 
-  win.webContents.loadDevTools();
   win.loadURL('http://localhost:3000');
 
   //win.webContents.openDevTools();
@@ -72,4 +71,11 @@ ipcMain.on('sync-ping-1', (event, arg) => {
 
   // Send response
   event.returnValue = 'SYNC PONG 1';
+});
+
+ipcMain.handle('async-ping-2', (event, ...args) => {
+  console.log('[IPC_Main] (SYNC) Recieved', args);
+
+  // Send response
+  return 'ASYNC PONG 2';
 });

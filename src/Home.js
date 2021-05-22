@@ -12,6 +12,11 @@ const Home = () => {
   const sendAsyncMessage = () => {
     window.ipcRenderer.send('async-ping-1', 'ASYNC PING 1');
   };
+  const sendAsyncMessage2 = async () => {
+    window.ipcRenderer
+      .invoke('async-ping-2', 'ASYNC PING 2')
+      .then((res) => console.log('[IPC_Renderer] (ASYNC) Received', res));
+  };
 
   // Send sync messages
   const sendSyncMessage = () => {
@@ -27,8 +32,8 @@ const Home = () => {
         Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum{' '}
       </p>
       <button onClick={sendAsyncMessage}>Send async</button>
+      <button onClick={sendAsyncMessage2}>Send async 2</button>
       <button onClick={sendSyncMessage}>Send sync</button>
-      <img src="https://picsum.photos/100" alt="pic from the interwebs" />
     </div>
   );
 };
