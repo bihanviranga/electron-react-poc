@@ -49,6 +49,17 @@ const fetchTodoItems = async () => {
   return items;
 };
 
+const deleteTodoItems = (id) => {
+  Todo.destroy({
+    where: {
+      id: id,
+    },
+  })
+    .then(() => console.log('[Database] (TODO) DELETE successful', id))
+    .catch(() => console.log('[Database] (TODO) DELETE failed', id));
+};
+
 module.exports.databaseConnection = seq;
 module.exports.addTodoItem = addTodoItem;
 module.exports.fetchTodoItems = fetchTodoItems;
+module.exports.deleteTodoItem = deleteTodoItems;

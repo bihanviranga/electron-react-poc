@@ -8,7 +8,9 @@ const Add = () => {
   });
 
   const createTodoItem = () => {
-    window.ipcRenderer.invoke('addTodoItem', todoItem);
+    window.ipcRenderer
+      .invoke('addTodoItem', todoItem)
+      .then(() => fetchTodoItems());
   };
 
   const fetchTodoItems = async () => {
@@ -17,6 +19,12 @@ const Add = () => {
       const fetchedItems = res.map((item) => item.dataValues);
       setAllItems(fetchedItems);
     });
+  };
+
+  const deleteTodoItem = (id) => {
+    window.ipcRenderer
+      .invoke('deleteTodoItem', id)
+      .then(() => fetchTodoItems());
   };
 
   useEffect(() => {
@@ -55,15 +63,25 @@ const Add = () => {
       <button onClick={createTodoItem}>Add</button>
 
       <hr />
-      <ul>
-        {allItems.map((item) => {
-          return (
-            <li>
-              {item.name} - <code>{item.description}</code>
-            </li>
-          );
-        })}
-      </ul>
+      <table>
+        <tbody>
+          {allItems.map((item) => {
+            return (
+              <tr key={item.id}>
+                <td>{item.name}</td>
+                <td>
+                  <code>{item.description}</code>
+                </td>
+                <td>
+                  <button onClick={() => deleteTodoItem(item.id)}>
+                    Delete
+                  </button>
+                </td>
+              </tr>
+            );
+          })}
+        </tbody>
+      </table>
     </div>
   );
 };

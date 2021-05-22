@@ -1,10 +1,10 @@
 const { app, BrowserWindow, ipcMain } = require('electron');
-const { Sequelize } = require('sequelize');
 
 const {
   databaseConnection,
   addTodoItem,
   fetchTodoItems,
+  deleteTodoItem,
 } = require('./database');
 
 let seq = undefined;
@@ -92,4 +92,9 @@ ipcMain.handle('addTodoItem', (event, args) => {
 // Fetch
 ipcMain.handle('fetchTodoItems', (event, args) => {
   return fetchTodoItems();
+});
+
+// Delete
+ipcMain.handle('deleteTodoItem', (event, args) => {
+  return deleteTodoItem(args);
 });
