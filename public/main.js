@@ -1,6 +1,8 @@
 const { app, BrowserWindow, ipcMain } = require('electron');
 const { Sequelize } = require('sequelize');
 
+const { databaseConnection } = require('./database');
+
 let seq = undefined;
 
 // Create the browser window
@@ -23,10 +25,7 @@ function createWindow() {
 
 // Connect to the database
 async function connectDatabase() {
-  seq = new Sequelize({
-    dialect: 'sqlite',
-    storage: 'db.sqlite',
-  });
+  seq = databaseConnection;
 
   try {
     await seq.authenticate();
